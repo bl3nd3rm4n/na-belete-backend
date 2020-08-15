@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @Primary
-public class UserService implements UserDetailsService {
+public class AuthService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
