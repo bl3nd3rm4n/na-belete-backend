@@ -2,7 +2,7 @@ package com.blndr.nabeletebackend.controller;
 
 import com.blndr.nabeletebackend.model.Holders.AuthenticationRequest;
 import com.blndr.nabeletebackend.model.Holders.AuthenticationResponse;
-import com.blndr.nabeletebackend.services.UserService;
+import com.blndr.nabeletebackend.services.AuthService;
 import com.blndr.nabeletebackend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class Controller {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private UserService userService;
+    private AuthService authService;
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -49,7 +49,7 @@ public class Controller {
         } catch (BadCredentialsException e) {
             throw new Exception("Incorrect username or password", e);
         }
-        final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
+        final UserDetails userDetails = authService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
