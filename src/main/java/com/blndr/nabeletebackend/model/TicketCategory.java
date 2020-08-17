@@ -8,20 +8,20 @@ import java.util.List;
 public class TicketCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int ticketCategoryId;
+    private Integer ticketCategoryId;
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
     private String categoryName;
-    private int availableTickets;
+    private Integer availableTickets;
     @OneToMany(mappedBy = "ticketCategory")
     private List<Ticket> soldTickets;
 
-    public int getTicketCategoryId() {
+    public Integer getTicketCategoryId() {
         return ticketCategoryId;
     }
 
-    public void setTicketCategoryId(int ticketCategoryId) {
+    public void setTicketCategoryId(Integer ticketCategoryId) {
         this.ticketCategoryId = ticketCategoryId;
     }
 
@@ -41,11 +41,11 @@ public class TicketCategory {
         this.categoryName = categoryName;
     }
 
-    public int getAvailableTickets() {
+    public Integer getAvailableTickets() {
         return availableTickets;
     }
 
-    public void setAvailableTickets(int availableTickets) {
+    public void setAvailableTickets(Integer availableTickets) {
         this.availableTickets = availableTickets;
     }
 
