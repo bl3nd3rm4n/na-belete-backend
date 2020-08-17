@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int ticketId;
+    private Integer ticketId;
     @ManyToOne
     @JoinColumn(name = "ticket_category_id", nullable = false)
     private TicketCategory ticketCategory;
@@ -17,11 +17,11 @@ public class Ticket {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public int getTicketId() {
+    public Integer getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(int ticketId) {
+    public void setTicketId(Integer ticketId) {
         this.ticketId = ticketId;
     }
 

@@ -7,17 +7,17 @@ import javax.persistence.*;
 public class Venue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int venueId;
+    private Integer venueId;
 
     private String venueName;
     private String locationUrl;
     private String city;
 
-    public int getVenueId() {
+    public Integer getVenueId() {
         return venueId;
     }
 
-    public void setVenueId(int venueId) {
+    public void setVenueId(Integer venueId) {
         this.venueId = venueId;
     }
 
