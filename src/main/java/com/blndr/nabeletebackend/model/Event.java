@@ -11,7 +11,7 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int eventId;
+    private Integer eventId;
     private String title;
     private String description;
     @ManyToOne
@@ -23,11 +23,11 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<TicketCategory> ticketCategories;
 
-    public int getEventId() {
+    public Integer getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(Integer eventId) {
         this.eventId = eventId;
     }
 

@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -12,16 +13,41 @@ import java.util.Collections;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
-    @Column(unique=true)
+    private Integer userId;
+
+    @NotNull
+    @Column(unique = true)
     private String email;
+
+    @NotNull
     private String password;
+
+    @NotNull
     private String firstName;
+
+    @NotNull
     private String lastName;
+
     private String address;
-    private String role;
-    private boolean enabled;
-    private int failCountdown;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+    @NotNull
+    private Boolean enabled = false;
+    @NotNull
+    private Integer failCountdown = 3;
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -47,17 +73,17 @@ public class User implements UserDetails {
         this.address = address;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList((GrantedAuthority) () -> role);
+        return Collections.singletonList((GrantedAuthority) () -> role.toString());
     }
 
     @Override
@@ -94,16 +120,8 @@ public class User implements UserDetails {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getEmail() {
@@ -114,11 +132,11 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public int getFailCountdown() {
+    public Integer getFailCountdown() {
         return failCountdown;
     }
 
-    public void setFailCountdown(int failCountdown) {
+    public void setFailCountdown(Integer failCountdown) {
         this.failCountdown = failCountdown;
     }
 }
