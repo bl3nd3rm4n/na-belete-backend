@@ -1,65 +1,71 @@
 package com.blndr.nabeletebackend.model.Holders;
 
-import com.blndr.nabeletebackend.model.User;
-
-import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
-@Entity
-@Table(name = "registration_requests")
 public class RegistrationRequest implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int registrationRequestId;
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expirationTime;
-    private String uuid;
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String address;
 
     public RegistrationRequest() {
+
     }
 
-    public RegistrationRequest(User user, String uuid) {
-        this.user = user;
-        this.expirationTime = Date.from(Instant.now().plus(10, ChronoUnit.MINUTES));
-        this.uuid = uuid;
+    public RegistrationRequest(String username, String password, String firstName, String lastName, String address) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
     }
 
-    public String getUuid() {
-        return uuid;
+    public RegistrationRequest(String username, String password, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public String getUsername() {
+        return username;
     }
 
-    public int getRegistrationRequestId() {
-        return registrationRequestId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setRegistrationRequestId(int registrationRequestId) {
-        this.registrationRequestId = registrationRequestId;
+    public String getPassword() {
+        return password;
     }
 
-    public User getUser() {
-        return user;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public Date getExpirationTime() {
-        return expirationTime;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setExpirationTime(Date expirationTime) {
-        this.expirationTime = expirationTime;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

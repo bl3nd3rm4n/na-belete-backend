@@ -16,15 +16,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private final UserDetailsService userDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
+
     @Autowired
-    UserDetailsService userDetailsService;
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    public SecurityConfiguration(UserDetailsService userDetailsService, JwtRequestFilter jwtRequestFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.eraseCredentials(false).userDetailsService(userDetailsService);
-
     }
 
     @Override
@@ -32,10 +35,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/user").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers("/admin").hasAuthority("ADMIN")
+                .antMatchers("/users").hasAuthority("ADMIN")
+
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/confirm-registration/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

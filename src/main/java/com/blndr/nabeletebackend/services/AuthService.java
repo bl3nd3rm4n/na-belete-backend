@@ -14,12 +14,16 @@ import java.util.Optional;
 @Service
 @Primary
 public class AuthService implements UserDetailsService {
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findUserByEmail(username);
+        Optional<User> user = userRepository.findUserByUsername(username);
         user.orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
         return user.get();
     }

@@ -1,6 +1,6 @@
 package com.blndr.nabeletebackend.services;
 
-import com.blndr.nabeletebackend.model.Holders.RegistrationRequest;
+import com.blndr.nabeletebackend.model.RegistrationCode;
 import com.blndr.nabeletebackend.model.User;
 import com.blndr.nabeletebackend.repository.RegistrationRequestRepository;
 import com.blndr.nabeletebackend.repository.UserRepository;
@@ -9,23 +9,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.rmi.NoSuchObjectException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserService {
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    RegistrationRequestRepository registrationRequestRepository;
+    private final UserRepository userRepository;
+    private final RegistrationRequestRepository registrationRequestRepository;
 
-    public Optional<User> findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    @Autowired
+    public UserService(UserRepository userRepository, RegistrationRequestRepository registrationRequestRepository) {
+        this.userRepository = userRepository;
+        this.registrationRequestRepository = registrationRequestRepository;
     }
 
-    public Optional<User> deleteUserByEmail(String email) throws NoSuchObjectException {
-        return userRepository.deleteUserByEmail(email);
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    public Optional<User> deleteUserByUsername(String username) {
+        return userRepository.deleteUserByUsername(username);
     }
 
     public User saveUser(User user) {
@@ -33,16 +37,16 @@ public class UserService {
         return user;
     }
 
-    public RegistrationRequest register(User user) {
+    public RegistrationCode register(User user) {
         String uuid;
         do {
             uuid = UUID.randomUUID().toString();
         } while (registrationRequestRepository.findRegistrationRequestByUuid(uuid).isPresent());
-        return registrationRequestRepository.save(new RegistrationRequest(saveUser(user), uuid));
+        return registrationRequestRepository.save(new RegistrationCode(saveUser(user), uuid));
     }
 
     public ResponseEntity confirmRegistration(String uuid) {
-        Optional<RegistrationRequest> registrationRequest = registrationRequestRepository.findRegistrationRequestByUuid(uuid);
+        Optional<RegistrationCode> registrationRequest = registrationRequestRepository.findRegistrationRequestByUuid(uuid);
         if (registrationRequest.isPresent()) {
             User user = registrationRequest.get().getUser();
             user.setEnabled(true);
@@ -52,6 +56,10 @@ public class UserService {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not registered/registration link expired.");
         }
+    }
+
+    public List<User> findUsers() {
+        return userRepository.findAll();
     }
 }
 

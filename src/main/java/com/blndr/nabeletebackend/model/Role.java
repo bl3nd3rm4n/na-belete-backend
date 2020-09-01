@@ -1,5 +1,5 @@
 package com.blndr.nabeletebackend.model;
 
-public enum UserRole {
+public enum Role {
     ADMIN, USER, ORGANISER
 }

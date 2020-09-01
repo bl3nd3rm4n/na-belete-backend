@@ -14,34 +14,29 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
-
     @NotNull
     @Column(unique = true)
-    private String email;
-
+    private String username;
     @NotNull
     private String password;
-
     @NotNull
     private String firstName;
-
     @NotNull
     private String lastName;
-
-    private String address;
+    private String address = "";
     @NotNull
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private Role role = Role.USER;
     @NotNull
     private Boolean enabled = false;
     @NotNull
     private Integer failCountdown = 3;
 
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -97,7 +92,11 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -122,14 +121,6 @@ public class User implements UserDetails {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Integer getFailCountdown() {
